@@ -1,6 +1,6 @@
 package mart.mono.commerce.purchase;
 
-import mart.mono.commerce.cart.CartItem;
+import mart.mono.commerce.cart.CartItemEntity;
 import mart.mono.inventory.lib.IProductService;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class PurchasesService {
         return purchasesRepository.findAll();
     }
 
-    public boolean purchase(List<CartItem> cartItems) {
+    public boolean purchase(List<CartItemEntity> cartItems) {
         try {
             purchasesRepository.save(new Purchase(UUID.randomUUID(), cartItems));
             cartItems.forEach(cartItem -> {

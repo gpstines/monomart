@@ -1,0 +1,32 @@
+server:
+  port: 8888
+
+spring:
+  config:
+    import: 'configserver:http://${CONFIG_SERVER_HOST:localhost:8083}'
+
+#spring:
+#  threads:
+#    virtual:
+#      enabled: true
+#  cloud.gateway.mvc:
+#    routesMap:
+#      monoMartCatalogRoutes:
+#        uri: 'http://${INVENTORY_HOST:localhost:8081}'
+#        predicates:
+#          - Path=/api/catalogs/**
+#      monoMartProductRoutes:
+#        uri: 'http://${INVENTORY_HOST:localhost:8081}'
+#        predicates:
+#          - Path=/api/products/**
+#      monoMartRoutes:
+#        uri: 'http://${MONOMART_HOST:localhost:8080}'
+#        predicates:
+#          - Path=/**
+
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: '*'

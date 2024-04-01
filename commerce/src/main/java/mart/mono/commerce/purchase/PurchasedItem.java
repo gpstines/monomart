@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mart.mono.commerce.product.Product;
+import mart.mono.commerce.product.ProductEntity;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
@@ -24,7 +24,7 @@ public class PurchasedItem {
 
     @OneToOne
     @JoinColumn(name ="product_id", nullable = false)
-    private Product product;
+    private ProductEntity product;
 
     private Integer quantity;
 }

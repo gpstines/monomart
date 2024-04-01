@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  monomart-config:
+    image: monomart-config-final:latest
+    container_name: 'monomart-config'
+    environment:
+      CI_JOB_TOKEN: ${CI_JOB_TOKEN}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://monomart-config:8083/application/default"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    ports:
+      - 8083:8083
+
+  monomart:
+    image: monomart-final:latest
+    container_name: 'monomart'
+    ports:
+      - 8080:8080
+
+  monomart-agw:
+    image: monomart-agw-final:latest
+    container_name: 'monomart-agw'
+    environment:
+      - INVENTORY_HOST=monomart-inventory:8081
+      - COMMERCE_HOST=monomart-commerce:8082
+      - MONOMART_HOST=monomart:8080
+      - CONFIG_SERVER_HOST=host.docker.internal:8083
+      - SPRING_PROFILES_ACTIVE=mono
+    depends_on:
+      monomart-config:
+        condition: service_healthy
+    ports:
+      - 8888:8888
+
+  monomart-commerce:
+    image: monomart-commerce-final:latest
+    container_name: 'monomart-commerce'
+    environment:
+      - PRODUCT_API_URL=http://monomart-inventory:8081
+      - RABBIT_HOST=rabbitmq
+    ports:
+      - 8082:8082
+
+  monomart-inventory:
+    image: monomart-inventory-final:latest
+    container_name: 'monomart-inventory'
+    environment:
+      - RABBIT_HOST=rabbitmq
+    ports:
+      - 8081:8081

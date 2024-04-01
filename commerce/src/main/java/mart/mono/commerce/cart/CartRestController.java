@@ -1,7 +1,8 @@
 package mart.mono.commerce.cart;
 
-import mart.mono.commerce.product.Product;
+import mart.mono.commerce.product.ProductEntity;
 
+import mart.mono.inventory.lib.Product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +23,7 @@ public class CartRestController {
         return cartService.get();
     }
 
-    //TODO delete after April 1 2024
     @PostMapping("api/v1/cart")
-    public CartItem add(@RequestBody mart.mono.inventory.lib.Product product) {
-        return cartService.add(product);
-    }
-
-    @PostMapping("api/v2/cart")
     public CartItem add(@RequestBody Product product) {
         return cartService.add(product);
     }
