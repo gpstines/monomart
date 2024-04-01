@@ -52,3 +52,5 @@ dependencyManagement {
 test {
     useJUnitPlatform()
 }
+
+bootJar.enabled(false)

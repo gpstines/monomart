@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  monomart:
+    image: monomart:latest
+    container_name: 'monomart'
+    ports:
+      - 8080:8080
+
+  monomart-agw:
+    image: monomart-agw:latest
+    container_name: 'monomart-agw'
+    environment:
+      - INVENTORY_HOST=monomart-inventory:8081
+      - MONOMART_HOST=monomart:8080
+    ports:
+      - 8888:8888
+
+  monomart-inventory:
+    image: monomart-inventory:latest
+    container_name: 'monomart-inventory'
+    ports:
+      - 8081:8081
