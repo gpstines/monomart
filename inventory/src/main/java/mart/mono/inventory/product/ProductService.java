@@ -1,5 +1,6 @@
 package mart.mono.inventory.product;
 
+import lombok.extern.slf4j.Slf4j;
 import mart.mono.inventory.lib.IProductService;
 import mart.mono.inventory.lib.Product;
 import mart.mono.inventory.lib.PurchaseEvent;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class ProductService implements IProductService {
 
     private final ProductRepository productRepository;
@@ -67,6 +69,7 @@ public class ProductService implements IProductService {
     }
 
     public void processPurchaseEvent(PurchaseEvent purchaseEvent) {
+        log.info("Publishing Event {}", purchaseEvent);
         decrementProductQuantity(purchaseEvent.getProductId(),purchaseEvent.getQuantity());
     }
 }

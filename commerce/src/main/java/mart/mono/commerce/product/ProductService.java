@@ -22,6 +22,7 @@ public class ProductService implements IProductService {
 
     @Override
     public Product getProductById(UUID productId) {
+        log.info("Retrieving product details for {}", productId);
         return restClient.get()
             .uri("/api/products/{0}", productId)
             .retrieve()

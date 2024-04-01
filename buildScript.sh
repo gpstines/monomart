@@ -43,3 +43,12 @@ cd config-server
 echo "************** Building Config Server docker image **************"
 docker build -t monomart-config-final .
 cd ..
+
+## Build Config Server docker image
+echo "Building Config Server jar file"
+cd config-server
+./gradlew clean bootJar
+
+echo "Building Config Server docker image"
+docker build -t monomart-config .
+cd ..
