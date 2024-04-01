@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mart.mono.commerce.cart.CartItem;
+import mart.mono.commerce.cart.CartItemEntity;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
@@ -25,6 +26,6 @@ public class Purchase {
     private UUID id;
 
     @OneToMany
-    private List<CartItem> items;
+    private List<CartItemEntity> items;
 
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface CartRepository extends JpaRepository<CartItem, UUID> {
+public interface CartRepository extends JpaRepository<CartItemEntity, UUID> {
 
 }

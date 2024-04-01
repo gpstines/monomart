@@ -1,7 +1,10 @@
 package mart.mono.commerce.cart;
 
-import mart.mono.commerce.product.Product;
+import lombok.RequiredArgsConstructor;
+import mart.mono.commerce.product.ProductEntity;
 import mart.mono.commerce.purchase.PurchasesService;
+import mart.mono.inventory.lib.IProductService;
+import mart.mono.inventory.lib.Product;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,40 +12,37 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class CartService {
     private final CartRepository cartRepository;
-
     private final PurchasesService purchasesService;
-
-    public CartService(CartRepository cartRepository, PurchasesService purchasesService) {
-        this.cartRepository = cartRepository;
-        this.purchasesService = purchasesService;
-    }
+    private final IProductService productService;
 
     public List<CartItem> get() {
-        return cartRepository.findAll();
+        return cartRepository.findAll().stream()
+            .map(this::toCartItem)
+            .toList();
     }
 
-    // TODO Delete after April 1 2024
-    public CartItem add(mart.mono.inventory.lib.Product product) {
-        Product cartProduct = new Product(product.getId(), product.getName(), product.getPrice());
-
-        return cartRepository.save(CartItem.builder()
-            .product(cartProduct)
-            .quantity(1)
-            .build());
-
+    private CartItem toCartItem(CartItemEntity cartItemEntity) {
+        return CartItem.builder()
+            .id(cartItemEntity.getId())
+            .quantity(cartItemEntity.getQuantity())
+            .product(productService.getProductById(cartItemEntity.getProduct().getId()))
+            .build();
     }
 
     public CartItem add(Product product) {
-        return cartRepository.save(CartItem.builder()
-                .product(product)
-                .quantity(1)
-                .build());
+        ProductEntity cartProduct = new ProductEntity(product.getId(), product.getName(), product.getPrice());
+        CartItemEntity savedCartItem = cartRepository.save(CartItemEntity.builder()
+            .product(cartProduct)
+            .quantity(1)
+            .build());
+        return toCartItem(savedCartItem);
     }
 
     public void remove(UUID cartItemId) {
-        Optional<CartItem> cartItem = cartRepository.findById(cartItemId);
+        Optional<CartItemEntity> cartItem = cartRepository.findById(cartItemId);
         cartItem.ifPresent(cartRepository::delete);
     }
 
@@ -51,7 +51,7 @@ public class CartService {
     }
 
     public void checkOut() {
-        List<CartItem> cart = cartRepository.findAll();
+        List<CartItemEntity> cart = cartRepository.findAll();
         boolean purchaseSuccess = purchasesService.purchase(cart);
         if (purchaseSuccess) {
             cartRepository.deleteAll();

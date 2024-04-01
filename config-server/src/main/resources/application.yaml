@@ -8,7 +8,5 @@ spring:
       server:
         git:
           default-label: main
-          uri: 'https://gitlab.com/experimental/config-repo'
+          uri: 'https://github.com/gballer77/monomart-config.git'
           skipSslValidation: true
-          username: '${CI_USERNAME}'
-          password: '${CI_JOB_TOKEN}'

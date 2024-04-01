@@ -1,11 +1,10 @@
 package mart.mono.inventory.product;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import mart.mono.inventory.lib.Product;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/products")
@@ -24,5 +23,10 @@ public class ProductRestController {
         }
 
         return productService.getForCatalog(catalogKey);
+    }
+
+    @GetMapping("/{id}")
+    public Product list(@PathVariable UUID id) {
+        return productService.getProductById(id);
     }
 }

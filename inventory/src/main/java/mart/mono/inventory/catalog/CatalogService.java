@@ -1,5 +1,6 @@
 package mart.mono.inventory.catalog;
 
+import mart.mono.inventory.lib.Catalog;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,15 @@ public class CatalogService {
     }
 
     public List<Catalog> getAll() {
-        return catalogRepository.findAll();
+        return catalogRepository.findAll().stream()
+            .map(this::toCatalog)
+            .toList();
+    }
+
+    private Catalog toCatalog(CatalogEntity catalogEntity) {
+        return Catalog.builder()
+            .id(catalogEntity.getId())
+            .displayName(catalogEntity.getDisplayName())
+            .build();
     }
 }
