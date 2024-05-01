@@ -4,7 +4,21 @@ Monomart is a sample application written with Spring Boot that is intended to se
 
 ## Components
 
-The makeup of Monomart is a Spring Boot web application, with a react frontend being served out from the embedded Tomcat.  This means that when the application is run, the UI is accessible from your browser on https://localhost:8080 (by default).
+This version of monomart is no longer a monolith.  It has the following components:
+
+### API Gateway (agw)
+
+### Config Server (config-server)
+
+### Configuration
+
+### Frontend (frontend)
+
+### Inventory Service (inventory)
+
+### Inventory Library (inventory-lib)
+
+### Commerce Service (commerce)
 
 ## To run the application
 

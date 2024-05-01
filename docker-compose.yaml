@@ -42,6 +42,22 @@ services:
     ports:
       - 8888:8888
 
+  log-stream-sink:
+    image: springcloudstream/log-sink-rabbit:latest
+    container_name: product-purchased-log-sink
+    environment:
+      - SPRING_CLOUD_STREAM_BINDINGS_INPUT_DESTINATION=commerce
+      - SPRING_CLOUD_STREAM_BINDINGS_INPUT_GROUP=logger.product.purchased
+      - SPRING_CLOUD_STREAM_BINDINGS_INPUT_CONTENT_TYPE=application/json
+      - SPRING_CLOUD_STREAM_BINDINGS_INPUT_CONTENT_BINDER=rabbit
+      - SPRING_CLOUD_STREAM_RABBIT_BINDINGS_INPUT_CONSUMER_BINDING_ROUTING_KEY=product.purchased
+      - SPRING_CLOUD_STREAM_BINDERS_RABBIT_TYPE=rabbit
+      - SPRING_CLOUD_STREAM_BINDERS_RABBIT_ENVIRONMENT_SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_CLOUD_STREAM_BINDERS_RABBIT_ENVIRONMENT_SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_CLOUD_STREAM_BINDERS_RABBIT_ENVIRONMENT_SPRING_RABBITMQ_PASSWORD=guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 #  monomart-commerce:
 #    image: monomart-commerce-final:latest
 #    container_name: 'monomart-commerce'
