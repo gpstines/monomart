@@ -2,6 +2,10 @@ package mart.mono.inventory.product;
 
 import mart.mono.inventory.lib.IProductService;
 import mart.mono.inventory.lib.Product;
+import org.springframework.amqp.rabbit.annotation.Exchange;
+import org.springframework.amqp.rabbit.annotation.Queue;
+import org.springframework.amqp.rabbit.annotation.QueueBinding;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -9,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Service
 public class ProductService implements IProductService {
@@ -63,9 +68,5 @@ public class ProductService implements IProductService {
             updatedProduct.setQuantity(newQuantity);
             productRepository.save(updatedProduct);
         }
-    }
-
-    public void processPurchaseEvent(PurchaseEvent purchaseEvent) {
-        decrementProductQuantity(purchaseEvent.getProductId(),purchaseEvent.getQuantity());
     }
 }

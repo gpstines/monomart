@@ -7,5 +7,4 @@ import java.util.UUID;
 
 @Repository
 public interface CartRepository extends JpaRepository<CartItemEntity, UUID> {
-
 }

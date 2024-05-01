@@ -2,22 +2,30 @@ package mart.mono.commerce.product;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mart.mono.commerce.confiig.EventBusConfig;
 import mart.mono.inventory.lib.IProductService;
 import mart.mono.inventory.lib.Product;
-import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class ProductService implements IProductService {
     public static final String PURCHASE_EVENT = "purchaseEvent";
 
-    private final StreamBridge streamBridge;
+    private final RabbitTemplate rabbitTemplate;
     private final RestClient restClient;
+
+    public ProductService(RabbitTemplate jsonRabbitTemplate, RestClient restClient, Jackson2JsonMessageConverter jsonMessageConverter) {
+        this.rabbitTemplate = jsonRabbitTemplate;
+        rabbitTemplate.setMessageConverter(jsonMessageConverter);
+
+        this.restClient = restClient;
+    }
 
     @Override
     public Product getProductById(UUID productId) {
@@ -34,6 +42,6 @@ public class ProductService implements IProductService {
             .quantity(quantity)
             .build();
         log.info("Publishing Event {}", purchaseEvent);
-        streamBridge.send(PURCHASE_EVENT, purchaseEvent);
+        rabbitTemplate.convertAndSend(EventBusConfig.TOPIC_PRODUCT_PURCHASED, purchaseEvent);
     }
 }

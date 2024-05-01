@@ -4,13 +4,7 @@ server:
 spring:
   application:
     name: commerce-app
-  cloud:
-    stream:
-      bindings:
-        purchaseEvent:
-          destination: purchase-topic
   rabbitmq:
     host: ${RABBIT_HOST:localhost}
-
 productapi:
   url: ${PRODUCT_API_URL:http://localhost:8888/}

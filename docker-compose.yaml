@@ -31,9 +31,9 @@ services:
     image: monomart-agw-final:latest
     container_name: 'monomart-agw'
     environment:
-      - INVENTORY_HOST=monomart-inventory:8081
-      - COMMERCE_HOST=monomart-commerce:8082
-      - MONOMART_HOST=monomart:8080
+      - INVENTORY_HOST=host.docker.internal:8081
+      - COMMERCE_HOST=host.docker.internal:8082
+      - MONOMART_HOST=host.docker.internal:8080
       - CONFIG_SERVER_HOST=host.docker.internal:8083
       - SPRING_PROFILES_ACTIVE=mono
     depends_on:
@@ -42,19 +42,19 @@ services:
     ports:
       - 8888:8888
 
-  monomart-commerce:
-    image: monomart-commerce-final:latest
-    container_name: 'monomart-commerce'
-    environment:
-      - PRODUCT_API_URL=http://monomart-inventory:8081
-      - RABBIT_HOST=rabbitmq
-    ports:
-      - 8082:8082
-
-  monomart-inventory:
-    image: monomart-inventory-final:latest
-    container_name: 'monomart-inventory'
-    environment:
-      - RABBIT_HOST=rabbitmq
-    ports:
-      - 8081:8081
+#  monomart-commerce:
+#    image: monomart-commerce-final:latest
+#    container_name: 'monomart-commerce'
+#    environment:
+#      - PRODUCT_API_URL=http://monomart-inventory:8081
+#      - RABBIT_HOST=rabbitmq
+#    ports:
+#      - 8082:8082
+#
+#  monomart-inventory:
+#    image: monomart-inventory-final:latest
+#    container_name: 'monomart-inventory'
+#    environment:
+#      - RABBIT_HOST=rabbitmq
+#    ports:
+#      - 8081:8081

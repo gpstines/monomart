@@ -6,12 +6,5 @@ spring:
     name: inventory-app
   flyway:
     locations: db/migration, db/data/prod
-  cloud:
-    stream:
-      function:
-        definition: purchaseEvent
-      bindings:
-        purchaseEvent-in-0:
-          destination: purchase-topic
   rabbitmq:
     host: ${RABBIT_HOST:localhost}
