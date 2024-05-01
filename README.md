@@ -30,6 +30,18 @@ The Commerce service is another microservice that implements the "Commerce" doma
 ## How the app works
 When a purchase is made, the commerce service sends a rabbitMQ message to the inventory service to let it know that a product was purchased.  Once the inventory service receives this message, it decrements the number of available quantity for that product that was purchased.
 
+### Message Producer (Commerce Service)
+The producing service, commerce, has a couple event related configurations that are important to look at:
+* Added **amqp** and **json** libraries to [build.gradle](commerce/build.gradle:31)
+* Added [EventBusConfig](commerce/src/main/java/mart/mono/commerce/confiig/EventBusConfig.java) to instantiate and configure beans for publishing json messages to RabbitMQ
+* Added the RabbitTemplate publish code to [ProductService](commerce/product/ProductService.java:45)
+
+### Message Consumer (Inventory Service)
+The consuming service, inventory, had the following relevant changes:
+* Added **amqp** and **json** libraries to [build.gradle](inventory/build.gradle:31)
+* Added [EventBusConfig](inventory/src/main/java/mart/mono/inventory/config/EventBusConfig.java) to instantiate and configure beans for consuming json messages from RabbitMQ.  It is also responsible to tell RabbitMQ what exchanges, queues, and bindings to create, which it does with `Declarables`.
+* Created a [ProductEventController](inventory/src/main/java/mart/mono/inventory/product/ProductEventController.java) and added `@RabbitListener` annotation to a function that acts as a listener callback.  This function handles any incoming messages.
+
 ## To run the application
 
 First build your applications by running 
