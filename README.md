@@ -7,55 +7,73 @@ Monomart is a sample application written with Spring Boot that is intended to se
 This version of monomart is no longer a monolith.  It has the following components:
 
 ### API Gateway (agw)
+This is a Spring Cloud Gateway application that serves as a reverse proxy to the applications and services that exist within the monomart ecosystem.  It is also configured to use a config server
 
-### Config Server (config-server)
+### API Gateway Config Server (config-server)
+This provides the gateway with its configurations.  This is just the server, not the actual configurations.
 
 ### Configuration
+The configuration yaml files that the Config Server uses are hosted in https://github.com/gballer77/monomart-config
 
 ### Frontend (frontend)
+This hosts the frontend React application
 
 ### Inventory Service (inventory)
+Inventory service is one of the microservices that implements the "Inventory" domain.  This consists of the products, their information and quantity, as well as their category.
 
 ### Inventory Library (inventory-lib)
+Inventory library contains the objects shared by the Inventory domain with the commerce domain.
 
 ### Commerce Service (commerce)
+The Commerce service is another microservice that implements the "Commerce" domain.  this consists of the shopping cart, and purchases.
+
+## How the app works
+When a purchase is made, the commerce service sends a rabbitMQ message to the inventory service to let it know that a product was purchased.  Once the inventory service receives this message, it decrements the number of available quantity for that product that was purchased.
 
 ## To run the application
 
-Ensure that you are running the application with Java 17.  Execute `./gradlew bootrun` from the root of the project.  This will:
-* Build the frontend
-* Copy frontend to backend static folder
-* Build the backend
-* Run the application
+First build your applications by running 
 
-## Workshop Scenario
+```shell
+./buildScript.sh
+```
 
-You have been called into Monomart inc to help their software team modernize and re-platform the application onto a container-based platform, Kubernetes for example.  Although the application is currently limited in scope, they anticipate a heavy influx of users in the coming months, potentially even reaching millions of purchases a second.   Throughout the modernization effort the application will need to remain online.  Additionally, depending on the duration of the refactor, additional features may need to be added to the Monomart application.
+After that is complete run the following
 
-## Workshop Tasks
+```shell
+docker-compose up
+```
 
-### Planning 
-- [x] Analyze the application
-- [ ] Determine decomposed architecture 
-  - [ ] Weigh pros/cons of the architecture
-  - [ ] Iterate
-- [ ] Determine decomposition approach
- 
-### Execution
-- [ ] Refactor
-- [ ] Regression Test
-- [ ] Repeat
+This will start up:
+* RabbitMQ
+* API Gateway
+* Config Server
+* Frontend
+* Log Streams sink for debugging
 
-## Things to think about
+It will not start up
+* Inventory Service
+* Commerce Service
 
-### Testing
+So to start these, run the following in separate terminals
 
-The current testing on Monomart is lackluster at best.  Some work, some don't.  Many haven't been updated in many commits.  A special emphasis should be put on tests of various types to ensure that this refactor, and future refactors and feature updates do not lead to regressions. For the sake of the workshop, create a few tests that cover the span of the 
+```shell
+./inventory/gradlew bootrun
+```
 
-### Refactoring approach
+and
 
-We cant throw away our agile and XP tenants when doing a modernization, if anything, its more important that we uphold them during a modernization.  This means that agile, TDD, pairing, frequent releases, should all be core to what we do during a modernization.  This means that we should steer clear of a "big bang" refactor, making all the updates in a vacuum and releasing the software at some far future date.  Rather, we should devise a plan that allows us to iteratively refactor,  ensuring to deploy our application frequently to staging then production, during the refactor.
+```shell
+./commerce/gradlew bootrun
+```
 
-### CI/CD
+Once everything is online you can navigate to
 
-When doing this for real, getting a pipeline running for the application(s) is just as important as tests in order to shorten the feedback and deployment loop.  For the purposes of this workshop, we will not build out about the CI/CD pipeline, but we should be thinking about it as we progress.
+[http://localhost:8888](http://localhost:8888) to get to the Application
+
+You can test the event send by 
+1) add an item to cart
+2) click the cart button in the top right hand corner of the screen
+3) click checkout
+
+This will send a message from commerce to inventory.  you will also see the logger-sink docker container write a log of the message payload
