@@ -2,6 +2,7 @@ package mart.mono.inventory.product;
 
 import mart.mono.inventory.lib.IProductService;
 import mart.mono.inventory.lib.Product;
+import mart.mono.inventory.lib.PurchaseEvent;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

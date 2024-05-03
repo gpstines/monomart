@@ -1,7 +1,6 @@
 package mart.mono.inventory.config;
 
 import mart.mono.inventory.product.ProductService;
-import mart.mono.inventory.product.PurchaseEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

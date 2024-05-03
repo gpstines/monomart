@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mart.mono.inventory.lib.IProductService;
 import mart.mono.inventory.lib.Product;
+import mart.mono.inventory.lib.PurchaseEvent;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
