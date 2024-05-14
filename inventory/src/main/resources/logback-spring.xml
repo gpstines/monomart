@@ -24,6 +24,7 @@
                 <pattern>
                     {
                     "level":"%level",
+                    "application":"inventory",
                     "class":"%logger{36}",
                     "thread":"%thread",
                     "traceId": "%X{traceId}",

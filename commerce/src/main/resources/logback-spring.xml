@@ -6,7 +6,7 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                %d{HH:mm:ss.SSS} %-5level %logger{36} ${name} %X{traceId:-} %X{spanId:-} - %msg%n
+                %d{HH:mm:ss.SSS} %-5level %logger{36} ${name} %thread %X{traceId:-} %X{spanId:-} - %msg%n
             </pattern>
         </encoder>
     </appender>
@@ -24,6 +24,7 @@
                 <pattern>
                     {
                     "level":"%level",
+                    "application":"commerce",
                     "class":"%logger{36}",
                     "thread":"%thread",
                     "traceId": "%X{traceId}",

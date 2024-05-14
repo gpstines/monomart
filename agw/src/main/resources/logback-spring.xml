@@ -24,6 +24,7 @@
                 <pattern>
                     {
                     "level":"%level",
+                    "application":"gateway",
                     "class":"%logger{36}",
                     "thread":"%thread",
                     "traceId": "%X{traceId}",
