@@ -1,6 +1,7 @@
 package mart.mono.commerce.product;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import mart.mono.inventory.lib.IProductService;
 import mart.mono.inventory.lib.Product;
@@ -21,6 +22,7 @@ public class ProductService implements IProductService {
     private final RestClient restClient;
 
     @Override
+    @SneakyThrows
     public Product getProductById(UUID productId) {
         log.info("Retrieving product details for {}", productId);
         return restClient.get()

@@ -1,7 +1,5 @@
 package mart.mono.commerce.cart;
 
-import mart.mono.commerce.product.ProductEntity;
-
 import mart.mono.inventory.lib.Product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
