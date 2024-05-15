@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
-    <springProperty name="name" source="spring.application.name" />
-
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>
-                %d{HH:mm:ss.SSS} %-5level %logger{36} ${name} %X{traceId:-} %X{spanId:-} - %msg%n
-            </pattern>
-        </encoder>
-    </appender>
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+    <springProperty scope="context" name="appName" source="spring.application.name"/>
 
     <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
         <http>
@@ -17,22 +9,12 @@
         </http>
         <format>
             <label>
-                <pattern>app=${name},host=${HOSTNAME},level=%level</pattern>
-                <readMarkers>true</readMarkers>
+                <pattern>app=${appName},host=${HOSTNAME},traceID=%X{traceId:-NONE},level=%level</pattern>
             </label>
             <message>
-                <pattern>
-                    {
-                    "level":"%level",
-                    "application":"inventory",
-                    "class":"%logger{36}",
-                    "thread":"%thread",
-                    "traceId": "%X{traceId}",
-                    "spanId": "%X{spanId}",
-                    "message": "%message"
-                    }
-                </pattern>
+                <pattern>${FILE_LOG_PATTERN}</pattern>
             </message>
+            <sortByTime>true</sortByTime>
         </format>
     </appender>
 

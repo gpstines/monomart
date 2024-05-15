@@ -1,7 +1,5 @@
 package mart.mono.commerce.cart;
 
-import brave.Tracer;
-import io.micrometer.tracing.annotation.ContinueSpan;
 import lombok.RequiredArgsConstructor;
 import mart.mono.inventory.lib.IProductService;
 import org.springframework.scheduling.annotation.Async;
@@ -16,7 +14,6 @@ public class CartItemRetriever {
     private final IProductService productService;
 
     @Async
-    @ContinueSpan
     public CompletableFuture<CartItem> toCartItem(CartItemEntity cartItemEntity) {
         return CompletableFuture.completedFuture(CartItem.builder()
             .id(cartItemEntity.getId())

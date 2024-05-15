@@ -6,11 +6,14 @@ import io.micrometer.context.ContextSnapshot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
 
 @SpringBootApplication
 @EnableAsync
@@ -21,7 +24,7 @@ public class CommerceAppApplication {
     }
 
     @Bean(name = "taskExecutor", destroyMethod = "shutdown")
-    ThreadPoolTaskScheduler threadPoolTaskScheduler() {
+    ThreadPoolTaskScheduler threadPoolTaskScheduler(TaskScheduler taskScheduler) {
         ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler() {
             @Override
             protected ExecutorService initializeExecutor(ThreadFactory threadFactory, RejectedExecutionHandler rejectedExecutionHandler) {
@@ -30,7 +33,7 @@ public class CommerceAppApplication {
             }
             @Override
             public ScheduledExecutorService getScheduledExecutor() throws IllegalStateException {
-                return ContextScheduledExecutorService.wrap(super.getScheduledExecutor());
+                return ContextScheduledExecutorService.wrap(super.getScheduledExecutor(), ContextSnapshot::captureAll);
             }
         };
         threadPoolTaskScheduler.setPoolSize(10);
