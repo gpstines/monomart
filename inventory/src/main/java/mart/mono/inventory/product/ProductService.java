@@ -69,7 +69,7 @@ public class ProductService implements IProductService {
     }
 
     public void processPurchaseEvent(PurchaseEvent purchaseEvent) {
-        log.info("Publishing Event {}", purchaseEvent);
+        log.info("Processing Event {}", purchaseEvent);
         decrementProductQuantity(purchaseEvent.getProductId(),purchaseEvent.getQuantity());
     }
 }
