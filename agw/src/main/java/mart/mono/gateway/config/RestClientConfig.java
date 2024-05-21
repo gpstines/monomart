@@ -1,4 +1,4 @@
-package mart.mono.gateway;
+package mart.mono.gateway.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.config.ConfigDataLocation;

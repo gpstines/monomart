@@ -1,4 +1,4 @@
-package mart.mono.gateway;
+package mart.mono.gateway.config;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
