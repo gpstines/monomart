@@ -79,6 +79,8 @@ services:
     volumes:
       - /tmp/grafana/storage:/var/lib/grafana
       - ./observability/grafana-datasources.yml:/etc/grafana/provisioning/datasources/grafana-datasources.yml
+      - ./observability/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      - ./observability/grafana-dashboard.json:/var/lib/grafana/dashboards/grafana-dashboard.json
 
   zipkin:
     image: openzipkin/zipkin
