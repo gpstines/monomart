@@ -1,4 +1,4 @@
-package mart.mono.gateway;
+package mart.mono.gateway.refresh;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
