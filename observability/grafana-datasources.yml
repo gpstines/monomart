@@ -6,6 +6,15 @@ datasources:
     type: zipkin
     access: proxy
     url: http://zipkin:9411
+    jsonData:
+      nodeGraph:
+        enabled: true
+      tracesToLogsV2:
+        customQuery: true
+        datasourceUid: my_loki_uid
+        spanStartTimeShift: "1h"
+        spanEndTimeShift: "-1h"
+        query: '{traceID="$${__span.traceId}"}'
     editable: true
   - name: Loki
     uid: my_loki_uid
