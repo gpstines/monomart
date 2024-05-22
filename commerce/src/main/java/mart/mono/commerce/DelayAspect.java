@@ -23,7 +23,7 @@ public class DelayAspect {
         return pjp.proceed();
     }
 
-    @Around("execution(* mart.mono.commerce.purchase.PurchaseService.*(..))")
+    @Around("execution(* mart.mono.commerce.purchase.PurchasesService.*(..))")
     public Object handlePurchaseService(ProceedingJoinPoint pjp) throws Throwable {
         delay();
         return pjp.proceed();
@@ -32,7 +32,7 @@ public class DelayAspect {
     @SneakyThrows
     private void delay() {
         int nextInt = random.nextInt(100);
-        if (nextInt < 15) {
+        if (nextInt < 10) {
             log.warn("Waiting on mission critical operation");
             TimeUnit.SECONDS.sleep(1);
         }
