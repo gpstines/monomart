@@ -45,3 +45,8 @@ We cant throw away our agile and XP tenants when doing a modernization, if anyth
 ### CI/CD
 
 When doing this for real, getting a pipeline running for the application(s) is just as important as tests in order to shorten the feedback and deployment loop.  For the purposes of this workshop, we will not build out about the CI/CD pipeline, but we should be thinking about it as we progress.
+
+### Deploying to Cloud Foundry
+
+This branch includes addition of a `manifest.yml` file for use in a Cloud Foundry deployment.
+The manifest specifies the application name and bumps the JRE to use Java 17 instead of the default of Java 8.
